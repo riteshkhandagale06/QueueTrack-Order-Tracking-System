@@ -5,8 +5,8 @@ function OutletQR() {
   const outletName = "Burger King";
   const outletId = "outlet_001";
 
- 
-const trackingURL = "http://192.168.0.104:5173/outlet/burgerking";
+  // Live customer URL
+  const trackingURL = `https://queuetrack-frontend.vercel.app/outlet/${outletId}`;
 
   return (
     <div className="min-h-screen bg-slate-100 flex justify-center items-center">
@@ -35,16 +35,15 @@ const trackingURL = "http://192.168.0.104:5173/outlet/burgerking";
         <p className="text-sm text-gray-400 mt-2 break-all">
           {trackingURL}
         </p>
+
         <div className="mt-8">
-
-  <Link
-    to="/dashboard"
-    className="block w-full bg-gray-600 hover:bg-gray-700 text-white py-3 rounded-xl font-semibold"
-  >
-    ← Back to Dashboard
-  </Link>
-
-</div>
+          <Link
+            to="/dashboard"
+            className="block w-full bg-gray-600 hover:bg-gray-700 text-white py-3 rounded-xl font-semibold"
+          >
+            ← Back to Dashboard
+          </Link>
+        </div>
 
       </div>
 
