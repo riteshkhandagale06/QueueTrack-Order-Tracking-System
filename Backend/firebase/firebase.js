@@ -1,26 +1,37 @@
 import { initializeApp, cert, getApps } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
-import { readFileSync } from "fs";
+import { readFileSync, existsSync } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Read Firebase Service Account
-const serviceAccount = JSON.parse(
-  readFileSync(path.join(__dirname, "serviceAccountKey.json"), "utf8")
-);
+let serviceAccount;
 
-// Initialize Firebase only once
+// Production (Render)
+if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+  serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+}
+// Local Development
+else {
+  const keyPath = path.join(__dirname, "serviceAccountKey.json");
+
+  if (!existsSync(keyPath)) {
+    throw new Error("Firebase serviceAccountKey.json not found.");
+  }
+
+  serviceAccount = JSON.parse(
+    readFileSync(keyPath, "utf8")
+  );
+}
+
 if (!getApps().length) {
   initializeApp({
     credential: cert(serviceAccount),
   });
 }
 
-// Firestore Database
 const db = getFirestore();
 
-// Export Firestore
 export { db };
